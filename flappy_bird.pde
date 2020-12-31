@@ -157,11 +157,12 @@ void reset(){  //hide game over screen
   control.getController("Yes").hide();
   control.getController("No").hide();
   //reset game variables
+  control.getController("difficulty").setValueLabel("Easy");
   lives = 3;
   b.pos.x = 0;
   b.pos.y = height/18;
   for(int i=0;i<3;i++){  //create pipe objects
-    p[i] = new Pipe((i+1)*random(200,250));
+    p[i] = new Pipe((i+1)*random(200,250)+300);
   }
   start = false;
   //show welcome screen
