@@ -11,7 +11,6 @@ the game was made using processing language/IDE
 
 ## Future Work
 * adding scoreboard
-* better graphics
 
 ## Team Members
 >* Mohammad Ashraf : [@elhedeq](https://github.com/elhedeq)
