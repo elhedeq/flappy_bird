@@ -1,5 +1,13 @@
 # Flappy Bird
-a simple flappy bird game made by processing 3 language/IDE
+a simple flappy bird game with 3 difficulties (easy, medium, hard)
+the game was made using processing language/IDE
+
+## dependencies
+* JRE 8 
+    needed to run processing
+* [Sound library](https://processing.org/reference/libraries/sound/index.html) for processing 3
+* [ControlP5 library](http://www.sojamo.de/libraries/controlP5/)
+    used in game GUI elements
 
 ## Future Work
 * adding scoreboard
