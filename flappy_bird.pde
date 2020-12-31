@@ -1,8 +1,8 @@
 import processing.sound.*;
 import controlP5.*;
 
-int lives = 10;
-PImage mountain, bird, gameover;  //images vriables
+int lives = 3;
+PImage mountain, bird, bird1, bird2, gameover;  //images vriables
 Bird b = new Bird();  //bird object
 Pipe [] p = new Pipe[3];  //pipes
 SoundFile flap, collision;  //sound files
@@ -12,7 +12,8 @@ boolean start;  //boolean to decide when to start the game
 void setup(){
   size(600,800);
   mountain = loadImage("background.jpg"); // Fetch the mountain image
-  bird = loadImage("bird.png"); //Fetch the image of bird
+  bird1 = loadImage("bird.png"); //Fetch the image of bird
+  bird2 = loadImage("bird-flapping.png");
   
   flap = new SoundFile(this, "birdflap.wav");  //wing flapping sound
   flap.rate(0.75);
@@ -23,7 +24,7 @@ void setup(){
   welcomeScreen();  //show welcome screen
   
   for(int i=0;i<3;i++){  //create pipe objects
-    p[i] = new Pipe((i+1)*random(200,250));
+    p[i] = new Pipe((i+1)*random(200,250)+300);
   }
   start = false;
 }
@@ -35,7 +36,6 @@ void draw(){
   } else if(start) {
     removeControlItems();
     if(mousePressed){  //press mouse button to jump
-        delay(10);
         b.applyForce();
     }
     
@@ -92,18 +92,20 @@ class Bird{
   
   void show(){
     if(lives>0){
-      image(bird, pos.x, pos.y);
+      image(bird1, pos.x, pos.y);
     }
   }
   
   void update(){  //bird falls down by default
-    delay(50);
+    bird = bird1;
+    bird1 = bird2;
+    bird2 = bird;
     pos.y+=10;
   }
   
   void applyForce(){  //jump upwards
    flap.play();
-   pos.y-=50;
+   pos.y-=40;
   }
 }
 
@@ -122,8 +124,10 @@ class Pipe{
   void show(){
     fill(color(0,255,0));
     stroke(0);
-    rect(x,0, w, top);
-    rect(x,height-bottom, w, bottom);
+    rect(x,0, w, top, 5);
+    rect(x-5,top-w+5, w+10, w, w, w, 0, 0);
+    rect(x,height-bottom, w, bottom, 5);
+    rect(x-5,height-bottom-5, w+10, w, 0, 0, w, w);
   }
   
   void update(){
@@ -231,13 +235,13 @@ void controlEvent(ControlEvent theEvent){//events listener
     } else if(theEvent.isFrom("No")){
       exit();
     } else if(theEvent.isFrom("Easy")){
-      lives = 10;
+      lives = 3;
       control.getController("difficulty").setValueLabel("Easy");
     } else if(theEvent.isFrom("Medium")){
-      lives = 5;
+      lives = 2;
       control.getController("difficulty").setValueLabel("Medium");
     } else if(theEvent.isFrom("Hard")){
-      lives = 2;
+      lives = 1;
       control.getController("difficulty").setValueLabel("Hard");
     } else {  //play button
       start = true;
