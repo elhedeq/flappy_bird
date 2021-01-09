@@ -9,9 +9,6 @@ the game was made using processing language/IDE
 * [ControlP5 library](http://www.sojamo.de/libraries/controlP5/)
     used in game GUI elements
 
-## Future Work
-* adding scoreboard
-
 ## Team Members
 >* Mohammad Ashraf : [@elhedeq](https://github.com/elhedeq)
 >* Mohammad Massoud : [@massoudsalem](https://github.com/massoudsalem)

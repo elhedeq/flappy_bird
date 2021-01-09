@@ -1,7 +1,7 @@
 import processing.sound.*;
 import controlP5.*;
 
-int lives = 3;
+int lives, score, highScore;
 PImage mountain, bird, bird1, bird2, gameover;  //images vriables
 Bird b = new Bird();  //bird object
 Pipe [] p = new Pipe[3];  //pipes
@@ -11,6 +11,9 @@ boolean start;  //boolean to decide when to start the game
 
 void setup(){
   size(600,800);
+  lives = 3;
+  score = 0;
+  highScore = 0;
   mountain = loadImage("background.jpg"); // Fetch the mountain image
   bird1 = loadImage("bird.png"); //Fetch the image of bird
   bird2 = loadImage("bird-flapping.png");
@@ -31,7 +34,7 @@ void setup(){
 
 void draw(){
   image(mountain, 0,0);
-  if(lives == 0 || b.pos.y>width+2*b.r){  //game over if no lives or bird hits the ground
+  if(lives <= 0 || b.pos.y>width+2*b.r){  //game over if no lives or bird hits the ground
     gameoverScreen();
   } else if(start) {
     removeControlItems();
@@ -44,8 +47,8 @@ void draw(){
       p[i].update();
       if(p[i].collide()){  //if bird collides with any pipe decrement lives
         lives--;
-        b.pos.x+=p[i].w+b.r;  //skip the pipe that bird collided with
-        tint(color(255,0,0),150);
+        b.pos.x+=p[i].w+1.5*b.r;  //skip the pipe that bird collided with
+        tint(color(255,0,0),150); //<>//
       }
     }
     
@@ -57,6 +60,8 @@ void draw(){
     textSize(20);
     fill(color(255,0,0));
     text("lives: "+lives,width-80,30);
+    fill(color(0,0,255));
+    text("score: "+score,width-80,50);
   }
 }
 
@@ -64,6 +69,14 @@ void gameoverScreen(){//show gamee over screen elements
   control.getController("gameover").show();
   control.getController("Yes").show();
   control.getController("No").show();
+  if(highScore<score){
+    highScore=score;
+  }
+  textSize(20);
+  fill(color(0,255,0));
+  text("Your score: "+score,width/3+20,height/2);
+  fill(color(0,0,255));
+  text("High score: "+highScore,width/3+20,height/2+30);
 }
 
 void welcomeScreen(){//show welcome screen elements
@@ -114,12 +127,14 @@ class Pipe{
   float w;  //pipe width
   float top;  //top pipe height
   float bottom;  //bottom pipe height
+  boolean passed;  //to check if bird passed this pipe
   
   public Pipe(float x){
     this.x = x;
     w=50;
     top=random(200,400);  //top pipe with random height
     bottom=height-(top+200);  //bottom pipe away from top pipe by 200
+    passed = false;
   }
   void show(){
     fill(color(0,255,0));
@@ -131,18 +146,23 @@ class Pipe{
   }
   
   void update(){
-    delay(10);  //pipes move to left
+    delay(5);  //pipes move to left
     x-=5;
-    if(x<=-50){  //if pipe our of screen  generate new one
+    if(x<-60){  //if pipe out of screen  generate new one
       x=width+50;
       top=random(200,400);
       bottom=height-(top+200);
+      passed = false;
+    }
+    if(x+w<b.pos.x && !passed){  //if bird passed this pipe
+      passed = true;
+      score++;
     }
   }
   
   boolean collide(){
-    if( (b.pos.x+b.r>x) && (b.pos.x < ( x+w ) ) ){  //if bird x coordinate within pipe's
-      if((b.pos.y<top || b.pos.y>(height-bottom-1.3*b.r))) {  //if bird y coordinate within pipe's
+    if( (b.pos.x+1.5*b.r>x) && (b.pos.x < ( x+w ) ) ){  //if bird x coordinate within pipe's
+      if((b.pos.y+20<top || b.pos.y>(height-bottom-1.3*b.r))) {  //if bird y coordinate within pipe's
         collision.play();
         return true;  //bird collided
       }
@@ -159,6 +179,7 @@ void reset(){  //hide game over screen
   //reset game variables
   control.getController("difficulty").setValueLabel("Easy");
   lives = 3;
+  score = 0;
   b.pos.x = 0;
   b.pos.y = height/18;
   for(int i=0;i<3;i++){  //create pipe objects
