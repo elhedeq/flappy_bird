@@ -14,16 +14,22 @@ for the code to run successfully you need to install the used libraries
 
 1- open processing and from sketch list choose import library then add library
 
-sketch>>import library>>add library
-![](1.png)
+![sketch>>import library>>add library](1.png)
 
-2-search for sound library and install it
-![](2.png)
-![](3.png)
+
+2- search for sound library and install it4
+
+![sound library](2.png)
+
+![installing](3.png)
+
 ![](4.png)
 
-3-do the same to install controlP5 library
-![](5.png)
+
+3- do the same to install controlP5 library
+
+![controlP5 library](5.png)
+
 
 ## Team Members
 >* Mohammad Ashraf : [@elhedeq](https://github.com/elhedeq)
