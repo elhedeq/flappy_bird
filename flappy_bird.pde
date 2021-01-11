@@ -146,8 +146,8 @@ class Pipe{
   }
   
   void update(){
-    delay(5);  //pipes move to left
-    x-=5;
+    //pipes move to left
+    x-=4;
     if(x<-60){  //if pipe out of screen  generate new one
       x=width+50;
       top=random(200,400);
